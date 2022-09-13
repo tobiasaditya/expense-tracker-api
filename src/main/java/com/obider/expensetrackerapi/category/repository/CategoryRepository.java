@@ -1,5 +1,6 @@
-package com.obider.expensetrackerapi.category;
+package com.obider.expensetrackerapi.category.repository;
 
+import com.obider.expensetrackerapi.category.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

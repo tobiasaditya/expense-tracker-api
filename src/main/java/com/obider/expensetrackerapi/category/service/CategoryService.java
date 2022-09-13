@@ -1,5 +1,6 @@
-package com.obider.expensetrackerapi.category;
+package com.obider.expensetrackerapi.category.service;
 
+import com.obider.expensetrackerapi.category.entity.Category;
 import com.obider.expensetrackerapi.category.input.InputCategory;
 
 import java.util.List;

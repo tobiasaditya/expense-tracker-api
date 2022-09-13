@@ -1,4 +1,4 @@
-package com.obider.expensetrackerapi.category;
+package com.obider.expensetrackerapi.category.entity;
 
 import com.obider.expensetrackerapi.user.entity.User;
 

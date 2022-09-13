@@ -1,10 +1,5 @@
 package com.obider.expensetrackerapi.category.entity;
 
-import com.obider.expensetrackerapi.category.Category;
-
-import java.util.ArrayList;
-import java.util.List;
-
 interface IShowCategory{
     Integer getId();
     String getTitle();

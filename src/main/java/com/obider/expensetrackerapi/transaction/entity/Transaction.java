@@ -1,6 +1,6 @@
 package com.obider.expensetrackerapi.transaction.entity;
 
-import com.obider.expensetrackerapi.category.Category;
+import com.obider.expensetrackerapi.category.entity.Category;
 import com.obider.expensetrackerapi.user.entity.User;
 
 import javax.persistence.*;

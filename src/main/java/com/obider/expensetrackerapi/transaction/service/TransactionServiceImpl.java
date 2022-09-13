@@ -1,7 +1,7 @@
 package com.obider.expensetrackerapi.transaction.service;
 
-import com.obider.expensetrackerapi.category.Category;
-import com.obider.expensetrackerapi.category.CategoryService;
+import com.obider.expensetrackerapi.category.entity.Category;
+import com.obider.expensetrackerapi.category.service.CategoryService;
 import com.obider.expensetrackerapi.transaction.entity.InputTransaction;
 import com.obider.expensetrackerapi.transaction.entity.Transaction;
 import com.obider.expensetrackerapi.transaction.repository.TransactionRepository;

@@ -1,6 +1,6 @@
 package com.obider.expensetrackerapi.category.helper;
 
-import com.obider.expensetrackerapi.category.Category;
+import com.obider.expensetrackerapi.category.entity.Category;
 import com.obider.expensetrackerapi.category.entity.ShowCategory;
 
 import java.util.ArrayList;
