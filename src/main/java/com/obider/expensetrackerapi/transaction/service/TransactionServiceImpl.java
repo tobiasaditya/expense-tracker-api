@@ -17,13 +17,11 @@ import java.util.Optional;
 public class TransactionServiceImpl implements TransactionService{
 
     private final TransactionRepository transactionRepository;
-    private final UserService userService;
     private final CategoryService categoryService;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, UserService userService, CategoryService categoryService) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CategoryService categoryService) {
         this.transactionRepository = transactionRepository;
-        this.userService = userService;
         this.categoryService = categoryService;
     }
 
@@ -42,14 +40,9 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public boolean addTrasaction(Integer userId, Integer categoryId, InputTransaction inputTransaction) {
-        //Get user
-        User user = userService.findUserById(userId);
-        if (user == null){
-            return false;
-        }
+    public boolean addTrasaction(User user, Integer categoryId, InputTransaction inputTransaction) {
         //Get Category
-        Category category = categoryService.getUserCategoryById(userId,categoryId);
+        Category category = categoryService.getUserCategoryById(user.getId(), categoryId);
         if (category == null){
             return false;
         }

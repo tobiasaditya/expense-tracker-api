@@ -6,6 +6,7 @@ import com.obider.expensetrackerapi.transaction.entity.ShowTransaction;
 import com.obider.expensetrackerapi.transaction.entity.Transaction;
 import com.obider.expensetrackerapi.transaction.helper.Formatter;
 import com.obider.expensetrackerapi.transaction.service.TransactionService;
+import com.obider.expensetrackerapi.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,8 @@ public class TransactionController {
             HttpServletRequest request,
             @PathVariable("categoryId") Integer categoryId,
             @RequestBody InputTransaction inputTransaction){
-        Integer userId = (Integer) request.getAttribute("userId");
-        boolean result = transactionService.addTrasaction(userId,categoryId,inputTransaction);
+        User currentUser = (User) request.getAttribute("user");
+        boolean result = transactionService.addTrasaction(currentUser,categoryId,inputTransaction);
         if (!result){
             return ResponseHandler.generateResponse("Failed to create transaction",HttpStatus.BAD_REQUEST);
         }
@@ -44,8 +45,8 @@ public class TransactionController {
     public ResponseEntity<Object> getAllTransaction(
             HttpServletRequest request,
             @PathVariable("categoryId") Integer categoryId){
-        Integer userId = (Integer) request.getAttribute("userId");
-        List<Transaction> result = transactionService.getAllTransaction(userId,categoryId);
+        User currentUser = (User) request.getAttribute("user");
+        List<Transaction> result = transactionService.getAllTransaction(currentUser.getId(),categoryId);
         List<ShowTransaction> format = Formatter.formatTransacations(result);
         return ResponseHandler.generateResponse("Success get all transactions",HttpStatus.OK,format);
     }
@@ -56,8 +57,8 @@ public class TransactionController {
             @PathVariable("categoryId") Integer categoryId,
             @PathVariable("transactionId") Integer transactionId
     ){
-        Integer userId = (Integer) request.getAttribute("userId");
-        Transaction transaction = transactionService.getTransactionById(userId,categoryId,transactionId);
+        User currentUser = (User) request.getAttribute("user");
+        Transaction transaction = transactionService.getTransactionById(currentUser.getId(),categoryId,transactionId);
         if (transaction == null){
             return ResponseHandler.generateResponse("Transaction not found",HttpStatus.NOT_FOUND);
         }
@@ -77,8 +78,8 @@ public class TransactionController {
         if (bindingResult.hasErrors()){
             return ResponseHandler.generateResponse("Invalid input",HttpStatus.UNPROCESSABLE_ENTITY,bindingResult.getAllErrors());
         }
-        Integer userId = (Integer) request.getAttribute("userId");
-        boolean result = transactionService.updateTransaction(userId,categoryId,transactionId,inputTransaction);
+        User currentUser = (User) request.getAttribute("user");
+        boolean result = transactionService.updateTransaction(currentUser.getId(), categoryId,transactionId,inputTransaction);
         if (!result){
             return ResponseHandler.generateResponse("Update transaction failed",HttpStatus.BAD_REQUEST);
         }
@@ -91,9 +92,9 @@ public class TransactionController {
             @PathVariable("categoryId") Integer categoryId,
             @PathVariable("transactionId") Integer transactionId
     ){
-        Integer userId = (Integer) request.getAttribute("userId");
+        User currentUser = (User) request.getAttribute("user");
 
-        boolean result = transactionService.deleteTransaction(userId,categoryId,transactionId);
+        boolean result = transactionService.deleteTransaction(currentUser.getId(), categoryId,transactionId);
         if (!result){
             return ResponseHandler.generateResponse("Failed to delete transaction",HttpStatus.BAD_REQUEST);
         }
