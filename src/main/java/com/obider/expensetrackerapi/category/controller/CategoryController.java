@@ -6,6 +6,7 @@ import com.obider.expensetrackerapi.category.helper.Formatter;
 import com.obider.expensetrackerapi.category.input.InputCategory;
 import com.obider.expensetrackerapi.category.service.CategoryService;
 import com.obider.expensetrackerapi.response.ResponseHandler;
+import com.obider.expensetrackerapi.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +28,16 @@ public class CategoryController {
 
     @GetMapping("/get/all")
     public ResponseEntity<Object> getAllCategories(HttpServletRequest request){
-        Integer userId = (Integer) request.getAttribute("userId");
-        List<Category> result =  categoryService.getAllCategories(userId);
+        User currentUser = (User) request.getAttribute("user");
+        List<Category> result =  categoryService.getAllCategories(currentUser.getId());
         List<ShowCategory> format = Formatter.formatCategories(result);
-
         return ResponseHandler.generateResponse("Success get categories",HttpStatus.OK,format);
     }
 
     @GetMapping(path = "/get/{categoryId}")
     public ResponseEntity<Object> getCategoryById(HttpServletRequest request, @PathVariable("categoryId") Integer categoryId){
-        Integer userId = (Integer) request.getAttribute("userId");
-        Category result =  categoryService.getUserCategoryById(userId,categoryId);
+        User currentUser = (User) request.getAttribute("user");
+        Category result =  categoryService.getUserCategoryById(currentUser.getId(),categoryId);
         if (result==null){
             return ResponseHandler.generateResponse("Category not found",HttpStatus.NOT_FOUND,result);
         }
@@ -47,8 +47,8 @@ public class CategoryController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<Object> addCategory(HttpServletRequest request, @RequestBody InputCategory inputCategory){
-        Integer userId = (Integer) request.getAttribute("userId");
-        categoryService.addCategory(userId,inputCategory);
+        User currentUser = (User) request.getAttribute("user");
+        categoryService.addCategory(currentUser,inputCategory);
         return ResponseHandler.generateResponse("Success create",HttpStatus.OK);
     }
 
@@ -57,8 +57,8 @@ public class CategoryController {
             HttpServletRequest request,
             @PathVariable("categoryId") Integer categoryId,
             @RequestBody InputCategory inputCategory){
-        Integer userId = (Integer) request.getAttribute("userId");
-        boolean result = categoryService.updateCategory(userId,categoryId,inputCategory);
+        User currentUser = (User) request.getAttribute("user");
+        boolean result = categoryService.updateCategory(currentUser.getId(),categoryId,inputCategory);
         if (!result){
             return ResponseHandler.generateResponse("Failed update category",HttpStatus.BAD_REQUEST);
         }
@@ -71,8 +71,8 @@ public class CategoryController {
             HttpServletRequest request,
             @PathVariable("categoryId") Integer categoryId
     ){
-        Integer userId = (Integer) request.getAttribute("userId");
-        boolean result = categoryService.removeCategoryWithTransactions(userId,categoryId);
+        User currentUser = (User) request.getAttribute("user");
+        boolean result = categoryService.removeCategoryWithTransactions(currentUser.getId(),categoryId);
         if (!result){
             return ResponseHandler.generateResponse("Failed to delete category",HttpStatus.BAD_REQUEST);
         }

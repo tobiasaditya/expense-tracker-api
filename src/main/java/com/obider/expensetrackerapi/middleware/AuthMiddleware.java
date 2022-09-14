@@ -44,7 +44,6 @@ public class AuthMiddleware extends GenericFilterBean {
             Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
                     .parseClaimsJws(token).getBody();
             Integer userId = Integer.parseInt(claims.get("userId").toString());
-            httpRequest.setAttribute("userId",userId);
             User user = userService.findUserById(userId);
             if (user == null){
                 httpResponse.sendError(403,"Invalid/expired token 4");

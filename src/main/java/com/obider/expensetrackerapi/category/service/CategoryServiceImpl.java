@@ -44,9 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void addCategory(Integer userId, InputCategory inputCategory) {
-        User user = userService.findUserById(userId);
-
+    public void addCategory(User user, InputCategory inputCategory) {
         Category newCategory = new Category(inputCategory.getTitle(),inputCategory.getDescription(),user);
         categoryRepository.save(newCategory);
     }
