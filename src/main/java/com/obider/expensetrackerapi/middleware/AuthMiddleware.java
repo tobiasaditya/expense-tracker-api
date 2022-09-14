@@ -1,6 +1,8 @@
 package com.obider.expensetrackerapi.middleware;
 
 import com.obider.expensetrackerapi.Constants;
+import com.obider.expensetrackerapi.user.entity.User;
+import com.obider.expensetrackerapi.user.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthMiddleware extends GenericFilterBean {
+    private final UserService userService;
+
+    public AuthMiddleware(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -33,17 +40,21 @@ public class AuthMiddleware extends GenericFilterBean {
         }
 
         String token = authHeaderArr[1];
-//        try{
+        try{
             Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
                     .parseClaimsJws(token).getBody();
             Integer userId = Integer.parseInt(claims.get("userId").toString());
             httpRequest.setAttribute("userId",userId);
-
-//        } catch (Exception e){
-//           e.printStackTrace();
-//            httpResponse.sendError(403,"Invalid/expired token 3");
-//            return;
-//        }
+            User user = userService.findUserById(userId);
+            if (user == null){
+                httpResponse.sendError(403,"Invalid/expired token 4");
+            }
+            httpRequest.setAttribute("user",user);
+        } catch (Exception e){
+           e.printStackTrace();
+            httpResponse.sendError(403,"Invalid/expired token 3");
+            return;
+        }
 
         filterChain.doFilter(servletRequest,servletResponse);
 
