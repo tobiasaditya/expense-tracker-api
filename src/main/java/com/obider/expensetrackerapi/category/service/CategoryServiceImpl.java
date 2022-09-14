@@ -64,7 +64,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void removeCategoryWithTransactions(Integer userId, Integer categoryId) {
-
+    public boolean removeCategoryWithTransactions(Integer userId, Integer categoryId) {
+        Category foundCategory = getUserCategoryById(userId,categoryId);
+        if (foundCategory == null){
+            return false;
+        }
+        categoryRepository.deleteById(foundCategory.getId());
+        return true;
     }
 }

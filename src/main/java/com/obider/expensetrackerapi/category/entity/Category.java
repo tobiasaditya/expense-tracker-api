@@ -1,8 +1,10 @@
 package com.obider.expensetrackerapi.category.entity;
 
+import com.obider.expensetrackerapi.transaction.entity.Transaction;
 import com.obider.expensetrackerapi.user.entity.User;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -26,6 +28,10 @@ public class Category {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "category")
+    private List<Transaction> transactions;
+
 
     public User getUser() {
         return user;

@@ -10,5 +10,5 @@ public interface CategoryService {
     Category getUserCategoryById(Integer userId, Integer categoryId);
     void addCategory(Integer userId, InputCategory inputCategory);
     boolean updateCategory(Integer userId, Integer categoryId, InputCategory inputCategory);
-    void removeCategoryWithTransactions(Integer userId, Integer categoryId);
+    boolean removeCategoryWithTransactions(Integer userId, Integer categoryId);
 }

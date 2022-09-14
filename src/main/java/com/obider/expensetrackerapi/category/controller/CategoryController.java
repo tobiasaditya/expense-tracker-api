@@ -65,4 +65,17 @@ public class CategoryController {
         return ResponseHandler.generateResponse("Success update category",HttpStatus.OK);
 
     }
+
+    @DeleteMapping(path = "/delete/{categoryId}")
+    public ResponseEntity<Object> deleteCategory(
+            HttpServletRequest request,
+            @PathVariable("categoryId") Integer categoryId
+    ){
+        Integer userId = (Integer) request.getAttribute("userId");
+        boolean result = categoryService.removeCategoryWithTransactions(userId,categoryId);
+        if (!result){
+            return ResponseHandler.generateResponse("Failed to delete category",HttpStatus.BAD_REQUEST);
+        }
+        return ResponseHandler.generateResponse("Success delete category",HttpStatus.OK);
+    }
 }
